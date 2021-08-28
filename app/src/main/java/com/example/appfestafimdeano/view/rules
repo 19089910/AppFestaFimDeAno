@@ -1,0 +1,90 @@
+RelativeLayout vs LinerLayout
+
+RelativeLayout: escreve por cima tudo nessecitando identificar/informar qual elemento esta relativo a outro.
+    >layout_below="@id/..." : informa que o elemento esta below(embaixo) de @id/...
+     >layout_alignParentBottom="true" :informa que o elemenento alinhado em seu pai de padrao botao(no roda pé)
+     >layout_centerHorizontal="true" :informa que o elemento centralizada horizontalmente(alegoria: duas molas
+     laterais em relacao com seu pai)
+LinerLayout escreve de forma linear com vetores nessecitando de orientacao e muito conteiner de
+LinerLayout para descrever cada parte de celulas
+     >android:layout_width="match_parent" + android:gravity="center" = layout_centerHorizontal="true"
+----------------------------------------------------------------------------------------------------
+PAGINAS NO APP(varias activity)
+com.exaple.appfestfimdeano > mause_direito > new > activity
+    a ordem de pioridade se da na manifests onde o codigo:
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+
+    que estiver contatenado com ele sera prioridade de arbertura.
+----------------------------------------------------------------------------------------------------
+METODO/FUNCAO INTENT(INTENCAO/proposito): usado para dar uma intencao ou um proposito a algo,
+no caso uma intencao ao dar um click de abrir outra pagina do app
+
+Intent a = new Intent(2 paremetros);
+    1 contexto: o que estar por traz da activity, o que torna essa activity uma classe android
+    EX:
+        >getApplicationcontext()
+        >this
+    2 acao: DetailsActivity.class activity que sera aberto sendo referencia class
+
+METODO/FUNCAO startActivity(a): o start usado para iniciar a intencao
+----------------------------------------------------------------------------------------------------
+SharedPreferences SHERED-PRFERENCES: armazena e reculpera dados pequenos e simples que nao mude com
+muita frequencia e de facil acesso no app. para isso e nessesario uma classe objeto propia para abrigar
+todas as funcoes e configuracoes do "DB"
+1 contrucao da classe :faz a instancia do Shared e faca um construtor para entrada de contexto e saida
+de funcoes da classe que vai conter os dados, use contexto como parametro(pq: ) ex:
+   //instacia do "BD"
+    private SharedPreferences mSharedPreferences;
+
+    //construtor com intuito de iniciar um BD com conteudo(inicar com contexto)
+    private SecurityPreferences(Context mcontext) {
+        this.mSharedPreferences = mcontext.getSharedPreferences(...);
+
+    1.2:para entrada de contexto ser aceito no Shared:
+    mcontext.getSharedPreferences(2paremetros): vai usar o SharedPreferences do contexto de fora da classe
+    SecurityPreferences(no caso conxto vem da main );
+    getSharedPreferences(2paremetros): metodo que pega uma instancia do SharedPreferences
+        >1 nome:o nome que a instancia do SharedPreferences vai ter.
+        >2 modo: Context.MODE_... :modificador de acesso dos dados do SharedPreferences fora do app,
+        (obs:SO gerencia esse acesso, sendo seguro mediente a esse nivel) as opicoes sao:
+            >APPEND:
+            >ENABLE_WRITE_AHEAD_LOGGING:
+            >MULTI_PROCESS:
+            >NO_LOCALIZED_COLLATORS:
+            >PRIVATE: ninguem fora do app tem acesso aos dados do SharedPreferences.
+            >SERVICE:
+
+2:salvar dados:editando o conteudo do Shared dentro do construtor(pq: o
+    nao tem logica em instanciar um "DB" vazio, e mais inteligente exigir os dados ou capturalos para
+    edita-lo posteriormente), metodo put(colocar) tem muitas funcoes de por EX:
+    this.mSharedPreferences.edit().put... :
+        >Int(2parametros)
+        >Boolean(2parametros)
+        >Float(2parametros)
+        >Long(2parametros)
+        >String(2parametros)
+            1:chave/id
+            2:valor
+    2.1: no construtor:
+    public void stroreString(String key, String value) {
+            this.mSharedPreferences.edit().putString(key,value).apply();//.applay: salvar as mudanças
+        }
+3 retornar os dados:
+    public String getStoredString(String key) {
+            return this.mSharedPreferences.getString(key, valorInvalido:" ");
+        }
+----------------------------------------------------------------------------------------------------
+DATA:
+1 definir a formatcao legivel a usuario com a instancia do SimpleDateFormat:
+    private static SimpleDateFormat SIMPLE_DATE_FORMATE = new SimpleDateFormat("dd/MM/yyyy");
+
+2 set o texto do Today com o metodo formatar(instancia)
+instancia e sua atribuicao do id's para manipulacao ao DATA na main
+        this.mViewHolder.textToday.setText(SIMPLE_DATE_FORMATE.format(Calendar.getInstance().getTime()));
+
+3 em uma classe calendario de o nome e os valores
+
