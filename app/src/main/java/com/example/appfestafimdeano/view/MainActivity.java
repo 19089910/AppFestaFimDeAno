@@ -12,6 +12,7 @@ import com.example.appfestafimdeano.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,9 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.mViewHolder.buttonConfirm = findViewById(R.id.button_confirm);
         //eventoCLick
         this.mViewHolder.buttonConfirm.setOnClickListener(this);
-        //DATA;
+        //DATA; informacao do toDay
         this.mViewHolder.textToday.setText(SIMPLE_DATE_FORMATE.format(Calendar.getInstance().getTime()));
-
+        //informacao da contagem de dias para o fim do ano
         String dia = String.format("%s %s", String.valueOf(this.getDaysLeft()), getString(R.string.Dias));
         this.mViewHolder.textDaysLaft.setText(dia);
     }
@@ -47,10 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //DATA; Logica do quantos dias faltal par o fim do ano
     private int getDaysLeft() {
         //dia hoje
-        Calendar calenderToDays = Calendar.getInstance();
-        int today = calenderToDays.get(Calendar.DAY_OF_YEAR);
+        int today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         //dias total do ano
-        //Calendar calenderLestDay = Calendar.getInstance();
         int Maxday = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR);
 
         return Maxday - today;
