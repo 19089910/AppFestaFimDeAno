@@ -82,9 +82,58 @@ DATA:
 1 definir a formatcao legivel a usuario com a instancia do SimpleDateFormat:
     private static SimpleDateFormat SIMPLE_DATE_FORMATE = new SimpleDateFormat("dd/MM/yyyy");
 
-2 set o texto do Today com o metodo formatar(instancia)
-instancia e sua atribuicao do id's para manipulacao ao DATA na main
+2 set as informacaoes o texto do Today com sua devida formatacao(e informacao do dia de hoje em GMT)
         this.mViewHolder.textToday.setText(SIMPLE_DATE_FORMATE.format(Calendar.getInstance().getTime()));
 
-3 em uma classe calendario de o nome e os valores
+3 com isso falta so informacaes de quantos dias falta para o fim do ano, que consiste em dia hj - dias do
+ano ambos em formato int para subtracao(obs type Data, e o que eles soa)
+    3.1 crie uma classe para abrigar esses dados e de o valor de hoje
 
+        private Data getDaysLeft() {
+            //dia hoje
+            Date today = Calendar.getInstance().getTime();
+
+            return today;
+        }
+    OBS:note que tanto a classe quanto o valor today estao em type Date e ainda com outras informacoes
+    nao nessesarias para a equacao. Obrigando a usar o metodo do Calendar.DAY_OF_YEAR que retorna a
+    quantidade de dias
+
+    3.2 aqui a começa com a conversao para o int feita segindo a uma incrementacao de instancia de Calendar
+    a um nome generico... ao fim, o imprego do uso do metodo Calender.getActualMaximum() que retorna
+    o maximo atual de uma propiedade do calendario como o maximo de dias(365 dependendo no ano varia)
+    o maximo de horas(24h) etc... sua informacao e tudo atual da hora da sua compilacao.
+
+        private int getDaysLeft() {
+            //dia hoje
+            Calendar calenderToDays = Calendar.getInstance();
+            int today = calenderToDays.get(Calendar.DAY_OF_YEAR);
+
+            //dias total do ano
+            Calendar calenderLestDay = Calendar.getInstance();
+            int Maxday = calendarLestDay.getActualMaximum(Calendar.DAY_OF_YEAR);
+
+            return Maxday - today;
+        }
+
+    3.3 aqui o codigo mais linpo e da maneira que eu faria.
+
+        private int getDaysLeft() {
+            //dia hoje
+            int today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+
+            //dias total do ano
+            int Maxday = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR);
+
+            return Maxday - today;
+        }
+
+4 instancia da classe getDaysLeft() no main
+        //une o valor da classe getDaysLeft() transformado para String(String.valueOf()),
+
+        //e puxa o texto(getString()) que acompanha o valer com res.values.strings.xml para centrarlizar
+        //String para mudar futuramente.
+        String dia = String.format("%s %s", String.valueOf(this.getDaysLeft()), getString(R.string.Dias));
+
+        //sua atribuicao ao textDaysLaft
+        this.mViewHolder.textDaysLaft.setText(dia);
