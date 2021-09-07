@@ -13,13 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:text="@string/voc_vai_participar" />
+        android:text="@string/voc_vai_participar"
+        android:textSize="28sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/text_label_msg"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary" />
 
     <CheckBox
@@ -28,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/voc_vai_participar" />
+        android:text="@string/voc_vai_participar"
+        android:textSize="28sp" />
 
 </RelativeLayout>

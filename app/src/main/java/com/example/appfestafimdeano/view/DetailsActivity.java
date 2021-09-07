@@ -23,8 +23,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
         this.mViewHolder.checkParticipate = findViewById(R.id.check_participate);
         this.mViewHolder.checkParticipate.setOnClickListener(this);
+
     }
-    //LOGICA g
+    //LOGICA check box
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.check_participate) {

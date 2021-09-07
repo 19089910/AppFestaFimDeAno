@@ -12,12 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="25/08/2021" />
+        android:text="25/08/2021"
+        android:textSize="26sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/text_today"
+        android:layout_marginTop="8dp"
         android:background="@color/design_default_color_secondary" />
     <!--text_label_days_left: texto_impresso_dias_faltao(para o fim do ano)
         impresso:(padrao para NAO modificar por causa do contexto do porgrma)-->
@@ -28,7 +30,8 @@
         android:layout_below="@id/text_today"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="160dp"
-        android:text="@string/dias_restantes_para_o_fim_do_ano" />
+        android:text="@string/dias_restantes_para_o_fim_do_ano"
+        android:textSize="20sp" />
     <!--text_days_laft: texto que sera modificado pelo progrma por contexto do programa-->
     <TextView
         android:id="@+id/text_days_laft"
@@ -37,7 +40,9 @@
         android:layout_below="@id/text_label_days_left"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="@string/Dias" />
+        android:text="@string/Dias"
+        android:textColor="@color/colorPrimary"
+        android:textSize="40sp" />
 
 
     <Button
@@ -45,7 +50,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="SIM/NÃO/Não confirmado" />
+        android:background="@drawable/button_background"
+        android:padding="24dp"
+        android:text="SIM/NÃO/Não confirmado"
+        android:textColor="@color/colorTextWhite"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>

@@ -41,6 +41,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Butao informa; se nao confirmado ou sim ou nao, para festa:
             //instancia das chaves
         mSecurityPreference = new SecurityPreferences(this);
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //VerifyPresence(), retorna qualquer valor associado a chave
+        this.VerifyPresence();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     //eventoCLick

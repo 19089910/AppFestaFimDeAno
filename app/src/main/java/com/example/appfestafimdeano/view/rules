@@ -242,3 +242,22 @@ de nao deu sua resposta ainda, ou seja nao abriu sua aplicacao. sao://verificar 
             this.mViewHolder.buttonConfirm.setText(getString(R.string.nao));
         }
     }
+----------------------------------------------------------------------------------------------------
+Ciclo de vida de uma Activity
+----------------------------------------------------------------------------------------------------
+passar dados
+----------------------------------------------------------------------------------------------------
+Style button usando background
+button e um conteiner colorido com funcoes diferenciadas; sendo um conteiner pode modificar seu background
+e ainda usar redio, corners.
+1 drawable(centralizador de background) > new > drawable Resource File > name:button_Background
+
+2 apaca o seletor e usa o shape EX
+<?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+ </shape>
+
+3  <corners android:radius="10dp"/> teg corners = cantos metodo radius = redondados pelo raio de "10pd"
+
+4 <solid android:color="@color/colorAccent"/> cor ao conteiner
