@@ -1,4 +1,4 @@
-RelativeLayout vs LinerLayout
+RelativeLayout vs LinerLayout:
 
 RelativeLayout: escreve por cima tudo nessecitando identificar/informar qual elemento esta relativo a outro.
     >layout_below="@id/..." : informa que o elemento esta below(embaixo) de @id/...
@@ -9,19 +9,19 @@ LinerLayout escreve de forma linear com vetores nessecitando de orientacao e mui
 LinerLayout para descrever cada parte de celulas
      >android:layout_width="match_parent" + android:gravity="center" = layout_centerHorizontal="true"
 ----------------------------------------------------------------------------------------------------
-PAGINAS NO APP(varias activity)
+PAGINAS NO APP(varias activity):
 com.exaple.appfestfimdeano > mause_direito > new > activity
     a ordem de pioridade se da na manifests onde o codigo:
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
-
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
 
-    que estiver contatenado com ele sera prioridade de arbertura.
+    Obs:que estiver contatenado com ele sera prioridade de arbertura.
 ----------------------------------------------------------------------------------------------------
-METODO/FUNCAO INTENT(INTENCAO/proposito): usado para dar uma intencao ou um proposito a algo,
-no caso uma intencao ao dar um click de abrir outra pagina do app
+METODO/FUNCAO INTENT(INTENCAO/proposito):
+usado para dar uma intencao ou um proposito a algo ou muito usado tbm interacao de Activyti,
+no caso uma intencao ao dar um click de abrir outra Activity(pagina) do app
 
 Intent a = new Intent(2 paremetros);
     1 contexto: o que estar por traz da activity, o que torna essa activity uma classe android
@@ -30,23 +30,29 @@ Intent a = new Intent(2 paremetros);
         >this
     2 acao: DetailsActivity.class activity que sera aberto sendo referencia class
 
-METODO/FUNCAO startActivity(a): o start usado para iniciar a intencao
+    Obs:METODO/FUNCAO startActivity(a): o metodo que start usado para iniciar a Activity da açao;
+    no caso a intencao e rodar DetailsAcrivity.
+
+    OBS2:alem do metodo StartActivity(a); tem o a.putExtra("","") e muito outros metodos para alterar a
+    acao ou passar algo para ela... pense no metodo Insort como um buraco de minhoca.
 ----------------------------------------------------------------------------------------------------
-SharedPreferences SHERED-PRFERENCES: armazena e reculpera dados pequenos e simples que nao mude com
+classe SharedPreferences:
+armazena e reculpera dados pequenos e simples que nao mude com
 muita frequencia e de facil acesso no app. para isso e nessesario uma classe objeto propia para abrigar
-todas as funcoes e configuracoes do "DB"
+a logica de presenca de click do "DB";
 1 contrucao da classe :faz a instancia do Shared e faca um construtor para entrada de contexto e saida
 de funcoes da classe que vai conter os dados, use contexto como parametro(pq: ) ex:
    //instacia do "BD"
     private SharedPreferences mSharedPreferences;
 
-    //construtor com intuito de iniciar um BD com conteudo(inicar com contexto)
+    //construtor com intuito de iniciar um BD com Contexto se ele sera visivel fora do app inportante
+    //tbm para dar contexo this no lugar do mcontext(pois o contexto e o OnCriate, vindo de fora).
     private SecurityPreferences(Context mcontext) {
         this.mSharedPreferences = mcontext.getSharedPreferences(...);
 
     1.2:para entrada de contexto ser aceito no Shared:
     mcontext.getSharedPreferences(2paremetros): vai usar o SharedPreferences do contexto de fora da classe
-    SecurityPreferences(no caso conxto vem da main );
+    SecurityPreferences(no caso conxto vem do OnCriate);
     getSharedPreferences(2paremetros): metodo que pega uma instancia do SharedPreferences
         >1 nome:o nome que a instancia do SharedPreferences vai ter.
         >2 modo: Context.MODE_... :modificador de acesso dos dados do SharedPreferences fora do app,
@@ -71,12 +77,22 @@ de funcoes da classe que vai conter os dados, use contexto como parametro(pq: ) 
             2:valor
     2.1: no construtor:
     public void stroreString(String key, String value) {
-            this.mSharedPreferences.edit().putString(key,value).apply();//.applay: salvar as mudanças
+            this.mSharedPreferences.edit().putString(key,value).apply();//.applay:salvar as mudanças
         }
 3 retornar os dados:
     public String getStoredString(String key) {
             return this.mSharedPreferences.getString(key, valorInvalido:" ");
         }
+OBS: esse shared PODE SER USADO/INSTANCIADO VARIAS VEZES salvando varios pequenos dados por que
+nao e o shered que carrega o dado/valor/estado, e sim que ele tem um metodo que uma chave ID que se
+carregardo/relacionado/atrelado com o dado/valor/estado; logo: assim com varias key com propositos
+diferentes iram carregar/relacionar/atrelar dado/valor/estado diferentes, tudo determinado pelo progra
+mador em uma classe centralizando as key e suas variacoes de estado/dado/valor que possam possuir se
+uma logica ocorrer determinada pelo usuario, como checkar se clicou ou nao na checkbox.
+
+OBS2: nesse modelo guarda a key e sua value sao tipo String, onde podemos igualar a key em algo e
+esse algo carregarar um estado ou um valor e com esse valor mais comum determinado pelo usuario.
+exemplo: em um checkbox de concordar com termos de uso de um aparelho.
 ----------------------------------------------------------------------------------------------------
 DATA:
 1 definir a formatcao legivel a usuario com a instancia do SimpleDateFormat:
@@ -116,7 +132,7 @@ ano ambos em formato int para subtracao(obs type Data, e o que eles soa)
             return Maxday - today;
         }
 
-    3.3 aqui o codigo mais linpo e da maneira que eu faria.
+    3.3 aqui o codigo mais linpo e da maneira que eu faria:
 
         private int getDaysLeft() {
             //dia hoje
@@ -128,7 +144,7 @@ ano ambos em formato int para subtracao(obs type Data, e o que eles soa)
             return Maxday - today;
         }
 
-4 instancia da classe getDaysLeft() no main
+4 instancia da classe getDaysLeft() no main:
         //une o valor da classe getDaysLeft() transformado para String(String.valueOf()),
 
         //e puxa o texto(getString()) que acompanha o valer com res.values.strings.xml para centrarlizar
@@ -137,3 +153,219 @@ ano ambos em formato int para subtracao(obs type Data, e o que eles soa)
 
         //sua atribuicao ao textDaysLaft
         this.mViewHolder.textDaysLaft.setText(dia);
+----------------------------------------------------------------------------------------------------
+Key:
+A key nada mais e que uma senha que tera um estado atrelado a ele assim com varias key com propositos
+diferentes iram carregar/relacionar/atrelar dado/valor/estado diferentes, tudo determinado pelo progra
+mador em uma classe centralizando as key e suas variacoes de estado/dado/valor que possam possuir se
+uma logica ocorrer determinada pelo usuario, como checkar se clicou ou nao na checkbox por exemplo.
+para centralizar essas constantes,logo assim para facil modificacao, separa-se em nova classe com
+essas constantes de chaves, isso e uma boa pratica e o mais importante; para nao causar um desalinhamento
+de valores e chaves(o desalinhamento se daria quando nao e claro qual valor sera esse valor, deixando
+no uma string na mao onde pode facil mente erra, nao padronizado ):
+
+public class FimDeAnoConstantes {
+//nomes das chave main, mais chaves mais "eslotes" para carregar/relacionar/atrelar.
+    public static String PRESENCE_KEY = "presenceKey";
+//dado/valor/estado que a chave pode carregar/relacionar/atrelar, depende do usuario
+//qual informacao sera carregado/relacionado/atrelado a chave
+    public static String CONFIRMATION_YES = "CONFIRMATION_YES";
+    public static String CONFIRMATION_NO = "CONFIRMATION_NO";
+}
+OBS:sendo uma chave qualquer nao precisa ser protejida, pois e de uso do program "como uma chave de
+arquivos publicos dos programadores"
+OBS2: e alem de ser publico e Statico o que quer dizer que nao importa a classe que for instanciada sera
+sempre o mesmo valor. ligando a ser publica nem precisa de uma instancia pois ja e visualizado.
+----------------------------------------------------------------------------------------------------
+shared preferences + key(salvar a presenca ou ausencia do usuario):
+1 instancia do SheredPreference:
+    como sua instancia e por meio de um construtor com intuito de iniciar um BD com Contexto. ele e
+    diferente logicamente por caisa do parametro exigindo o OnCriate(this) onde sua instancia tem que
+    ser fora do OnCriate mas o parametro dentro do OnCriante
+    EX:
+        private SecurityPreferences mSecurityPreferences;//= new SecurityPreferences(this) iria dar erro
+        //pois e o onCreate e que possui o contexto logo, tera ques ser feito dentro dele essa instancia
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            this.mSecurityPreferences = new SecurityPreferences(this);
+            }
+
+2 A logica do checkBox; e salvar aquivo na chave:
+    2.1 o checkbox esta no dentro do DerailsActivity.java a logica se foi clicado ou nao:
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.check_participate) {
+                if (this.mViewHolder.checkParticipate.isChecked()) {//checkBox=true or false
+                    //salvar true
+
+    2.2:o metodo de carregar/relacionar/atrelar a chave no dado/valor/estado como paremetro
+                this.mSecurityPreferences.stroreString(FimDeAnoConstantes.PRESENCE_KEY, FimDeAnoConstantes.CONFIRMATION_YES);
+                } else {
+                    //salvar false
+                this.mSecurityPreferences.stroreString(FimDeAnoConstantes.PRESENCE_KEY, FimDeAnoConstantes.CONFIRMATION_NO);
+                }
+            }
+        }
+----------------------------------------------------------------------------------------------------
+Obitando o retorno na MainActivity(VerifyPresence()):
+Em resumo e so usar o metodo de retorno da SheredPreferences alem de que O QUE IREMOS FAZER COM ESSA
+INFORMACAO  SALVA e suas duas situacoes dadas no  DetailsActifity alem de dar uma 3° situacao que e a
+de nao deu sua resposta ainda, ou seja nao abriu sua aplicacao. sao://verificar se ele nao confirmou
+                                                                    //verificar se ele confirmou e vai
+                                                                    //verificar se ele confirmou e nao vai
+    1.O QUE IREMOS FAZER COM ESSA INFORMACAO  SALVA:
+    quero que o butao que leva a pagina de DetailsActifity carrege uma string que informe uma das 3
+    situacoes sendo a unica saida da informacao se ele vai ou nao seja o butao, para evitar de ficar
+    indo e vindo de pagina, sendo somente atualizado se apertado o butao para atualizar a informacao
+
+        <string name="nao_confirmado">Não confirmado</string>
+        <string name="nao">Não</string>
+        <string name="sim">Sim</string>
+    OBS: essa string tem que ser centralizada na R.String.xml sendo referencia na logica da VerifyPresenc
+
+    2 logica verificar:
+    this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY); retorna qualquer valor
+    associado a chave se nao estiver valor nem um ou seja nao sofrei da logica do DetailsActivity(usuario
+    clicou ou nao) ou seja caiu na condicao do defVelue da securityPreference, que e vasio ("") e o que
+    retornara pelo defVelue, isso no if ficaria perfeito para a primeria situacao Ex:
+
+    private void VerifyPresence() {
+        //retorna qualquer valor associado a chave
+        String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+        if(Presence.equals("")){
+            //verificar se ele nao confirmou
+            //getString metodo para pegar String, ant erro e padrao
+             this.mViewHolder.buttonConfirm.setText(getString(R.string.nao_confirmado));
+        } else if (Presence.equals(FimDeAnoConstantes.CONFIRMATION_YES)) {
+            //verificar se ele confirmou e vai
+            this.mViewHolder.buttonConfirm.setText(getString(R.string.sim));
+        } else {
+            //verificar se ele confirmou e nao vai
+            this.mViewHolder.buttonConfirm.setText(getString(R.string.nao));
+        }
+    }
+----------------------------------------------------------------------------------------------------
+Ciclo de vida de uma Activty
+contexto: um App com 3 paginas(3Activity) a navegação se daria da main ate sua subjacentes e na volta para mein.
+as 3 nao podem rodar jutas para evirar consumo de memoria. Logo, existe um ciclo de vida com objetivo de pausar,
+restaurar ou destruir Activitys, estados que activity possue.
+1 O processo de abrir o app:
+    onCriate roda toda on metodos na memoria > onStart > onResume
+    onStart onResume podem ser telas de loading onde roda coias ou informacoes simples.
+    apois o onResume e interativo com o usuario.
+
+2 passando de pagina dentro da aplicacao:
+    onPause > onCreate da pagina 2 > onStarte da pagina 2 > onResume da pagina 2 > onStop
+    onPause e o onStop sao da primerira pagina que fica responsavel de pausar o processo e salvar os
+    dados.
+    tres opicoes para primerira pagina no onStop:
+    1 onDestroi ou seja a 1 pagiana ta no gatilho para ser eliminada
+    2 onRestant que reculpera a memoria para o onStart,
+    3 se tiver muitos dados para realocar, se for esse o caso vai para o onCriate realocar tudo de novo
+
+3 retornando
+    onPause da pagina 2 > onCreate  > onStarte > onResume > onStop da pagina 2
+OBS: isso e importante saber para metodo de verificacao ou passar dados de uma pagina para outra
+pois se o metodo de verificacao estiver no onCriate, ao passar de pagina ele nao roda de novo
+pois o onCriate so roda uma vez que e no inicio, com essas informacoes da colocar o metodo em outros
+como onStart, OnResume ou ate mesmo no onRestant.
+----------------------------------------------------------------------------------------------------
+retornar verificacao entre activity
+
+gambiarra:
+diferente da gambiarra de verificar o sheredPreference foi usado com if para saber CONFIRMATION_YES
+para retornar isChecked = true:
+    String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+        if(Presence.equals(Presence.equals(FimDeAnoConstantes.CONFIRMATION_YES))){
+            this.mViewHolder.checkParticipate.setChecked(true);
+        }
+OBS: evitando escrever quase 2 VerifyPresence, para essa gambiarra seria melhor escrever o VerifyPresence
+no DetailsActivity, em vez de tudo isso, vamos:
+
+passar dados entre activity:
+usaremos o metodo intent como interacao de activity passando dados put para outra activity(Details),
+os Dados que a chave carrega (CONFIRMATION_YES ou CONFIRMATION_NO) obidecendo o ciclo de vida das Activity.
+logo, 3 conseitos, metodo VerifyPresence(), metodo Intent e a regra do ciclo de vida das Activity...
+para isso:
+
+1 receba o dado CONFIRMATION_YES ou CONFIRMATION_NO da chave, logicamente ele tem a informacao se o
+butao foi clicado ou nao para dar essa informacao ao usuario no VerifyPresence().
+    //retorna qualquer valor associado a chave
+    String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+
+2 com a super-posicao de valor da key, so devolva sem abrir a caixa o mesmo valor para o DetailsActivity
+com o metodo:
+    Intent a = new Intent(this, DetailsActivity.class);
+    a.putExtra(FimDeAnoConstantes.PRESENCE_KEY, Presence);
+OBS: assim a intencao de mandar esses dados para a açao... mas falta tratar esse dado que foi jogado
+na Details
+OBS2: putExtra("key", dado) pode enviar varios tipos de dados porem com uma chave String, assim como Shered.
+
+3 obedecendo o ciclo de vida das Activitys,para passar o dado no instante, ele tem que rodar se da
+no ato passagen da pagina assim na acao de click:
+    //eventoCLick
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.button_confirm) {
+            //instancia (context, açao)
+            Intent intent = new Intent(this, DetailsActivity.class);
+            //putExtra, passagem retorno do dado da key para a Details
+            String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+            intent.putExtra(FimDeAnoConstantes.PRESENCE_KEY, Presence);
+            //abrir Activity da açao
+            startActivity(intent);
+        }
+    }
+
+    OBS: o dado da key e uma inforamcao que sera tratada no DetailsActivity e sua resposta se da no check Box
+         estar verde ou nao, tendo 3 possibilidades: Key nao_confirmado, CONFIRMATION_YES ou CONFIRMATION_NO
+         mas so o que nos intereca e a CONFIRMATION_YES
+
+4 no DetailsActivity seu tratamento no metodo loadDataPromActivity(), recebendo os dados com
+getIntent().getExtras() o primeiro se comunica com Intent instanciada em outra activity grassas ao contexto
+o segundo define o tipo de resposta que procuro que retorna um tipo diferente o tipo Bundle, pense nele como
+um tipo abistrato de dado que porven da uniao da String key com dado do tipo generico:
+        private void loadDataPromActivity(){
+            Bundle extra = getIntent().getExtras();
+        }
+
+5 ant_erro validacoes se esse extra for nullo(se futuramente extender o codigo para existir varias
+DetailsActivity) e getString tbm pode retornar nullo(na conversao de Budle para string) isso acontece
+pois na conversao perde as propiedades do SheredPreference de defvelue do getStoredString:
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            String Presence = extra.getString(FimDeAnoConstantes.PRESENCE_KEY);
+            if (Presence != null) {
+
+            }
+
+6 o dado da key e uma inforamcao que sera tratada no DetailsActivity e sua resposta se da no check Box
+  estar verde ou nao, tendo 3 possibilidades: Key nao_confirmado, CONFIRMATION_YES ou CONFIRMATION_NO
+  mas so o que nos intereca e a CONFIRMATION_YES selecionando ela com && acaba assim:
+    private void loadDataPromActivity(){
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            String Presence = extra.getString(FimDeAnoConstantes.PRESENCE_KEY);
+            if (Presence != null && Presence.equals(FimDeAnoConstantes.CONFIRMATION_YES)) {
+                this.mViewHolder.checkParticipate.setChecked(true);
+            } else {
+                this.mViewHolder.checkParticipate.setChecked(false);
+            }
+        }
+    }
+----------------------------------------------------------------------------------------------------
+Style button usando background
+button e um conteiner colorido com funcoes diferenciadas; sendo um conteiner pode modificar seu background
+e ainda usar redio, corners.
+1 drawable(centralizador de background) > new > drawable Resource File > name:button_Background
+
+2 apaca o seletor e usa o shape EX
+<?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+ </shape>
+
+3  <corners android:radius="10dp"/> teg corners = cantos metodo radius = redondados pelo raio de "10pd"
+
+4 <solid android:color="@color/colorAccent"/> cor ao conteiner
