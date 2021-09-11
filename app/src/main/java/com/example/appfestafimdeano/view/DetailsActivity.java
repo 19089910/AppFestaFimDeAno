@@ -11,6 +11,7 @@ import com.example.appfestafimdeano.constantes.FimDeAnoConstantes;
 import com.example.appfestafimdeano.data.SecurityPreferences;
 
 public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
+
     private ViewHolder mViewHolder = new ViewHolder();
     private SecurityPreferences mSecurityPreferences;//= new SecurityPreferences(this) iria dar erro
     //pois e o onCreate e que possui o contexto logo, tera ques ser feito dentro dele essa instancia
@@ -24,6 +25,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         this.mViewHolder.checkParticipate = findViewById(R.id.check_participate);
         this.mViewHolder.checkParticipate.setOnClickListener(this);
 
+        this.loadDataPromActivity();
     }
     //LOGICA check box
     @Override
@@ -38,6 +40,19 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
     }
+
+    private void loadDataPromActivity(){
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            String Presence = extra.getString(FimDeAnoConstantes.PRESENCE_KEY);
+            if (Presence != null && Presence.equals(FimDeAnoConstantes.CONFIRMATION_YES)) {
+                this.mViewHolder.checkParticipate.setChecked(true);
+            } else {
+                this.mViewHolder.checkParticipate.setChecked(false);
+            }
+        }
+    }
+
 
 
     private static class ViewHolder {
