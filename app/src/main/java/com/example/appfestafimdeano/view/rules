@@ -20,8 +20,8 @@ com.exaple.appfestfimdeano > mause_direito > new > activity
     Obs:que estiver contatenado com ele sera prioridade de arbertura.
 ----------------------------------------------------------------------------------------------------
 METODO/FUNCAO INTENT(INTENCAO/proposito):
-usado para dar uma intencao ou um proposito a algo,
-no caso uma intencao ao dar um click de abrir outra pagina do app
+usado para dar uma intencao ou um proposito a algo ou muito usado tbm interacao de Activyti,
+no caso uma intencao ao dar um click de abrir outra Activity(pagina) do app
 
 Intent a = new Intent(2 paremetros);
     1 contexto: o que estar por traz da activity, o que torna essa activity uma classe android
@@ -30,8 +30,11 @@ Intent a = new Intent(2 paremetros);
         >this
     2 acao: DetailsActivity.class activity que sera aberto sendo referencia class
 
-    Obs:METODO/FUNCAO startActivity(a): o start usado para iniciar a intencao; no caso a intencao e
-    rodar DetailsAcrivity.
+    Obs:METODO/FUNCAO startActivity(a): o metodo que start usado para iniciar a Activity da açao;
+    no caso a intencao e rodar DetailsAcrivity.
+
+    OBS2:alem do metodo StartActivity(a); tem o a.putExtra("","") e muito outros metodos para alterar a
+    acao ou passar algo para ela... pense no metodo Insort como um buraco de minhoca.
 ----------------------------------------------------------------------------------------------------
 classe SharedPreferences:
 armazena e reculpera dados pequenos e simples que nao mude com
@@ -243,9 +246,114 @@ de nao deu sua resposta ainda, ou seja nao abriu sua aplicacao. sao://verificar 
         }
     }
 ----------------------------------------------------------------------------------------------------
-Ciclo de vida de uma Activity
+Ciclo de vida de uma Activty
+contexto: um App com 3 paginas(3Activity) a navegação se daria da main ate sua subjacentes e na volta para mein.
+as 3 nao podem rodar jutas para evirar consumo de memoria. Logo, existe um ciclo de vida com objetivo de pausar,
+restaurar ou destruir Activitys, estados que activity possue.
+1 O processo de abrir o app:
+    onCriate roda toda on metodos na memoria > onStart > onResume
+    onStart onResume podem ser telas de loading onde roda coias ou informacoes simples.
+    apois o onResume e interativo com o usuario.
+
+2 passando de pagina dentro da aplicacao:
+    onPause > onCreate da pagina 2 > onStarte da pagina 2 > onResume da pagina 2 > onStop
+    onPause e o onStop sao da primerira pagina que fica responsavel de pausar o processo e salvar os
+    dados.
+    tres opicoes para primerira pagina no onStop:
+    1 onDestroi ou seja a 1 pagiana ta no gatilho para ser eliminada
+    2 onRestant que reculpera a memoria para o onStart,
+    3 se tiver muitos dados para realocar, se for esse o caso vai para o onCriate realocar tudo de novo
+
+3 retornando
+    onPause da pagina 2 > onCreate  > onStarte > onResume > onStop da pagina 2
+OBS: isso e importante saber para metodo de verificacao ou passar dados de uma pagina para outra
+pois se o metodo de verificacao estiver no onCriate, ao passar de pagina ele nao roda de novo
+pois o onCriate so roda uma vez que e no inicio, com essas informacoes da colocar o metodo em outros
+como onStart, OnResume ou ate mesmo no onRestant.
 ----------------------------------------------------------------------------------------------------
-passar dados
+retornar verificacao entre activity
+
+gambiarra:
+diferente da gambiarra de verificar o sheredPreference foi usado com if para saber CONFIRMATION_YES
+para retornar isChecked = true:
+    String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+        if(Presence.equals(Presence.equals(FimDeAnoConstantes.CONFIRMATION_YES))){
+            this.mViewHolder.checkParticipate.setChecked(true);
+        }
+OBS: evitando escrever quase 2 VerifyPresence, para essa gambiarra seria melhor escrever o VerifyPresence
+no DetailsActivity, em vez de tudo isso, vamos:
+
+passar dados entre activity:
+usaremos o metodo intent como interacao de activity passando dados put para outra activity(Details),
+os Dados que a chave carrega (CONFIRMATION_YES ou CONFIRMATION_NO) obidecendo o ciclo de vida das Activity.
+logo, 3 conseitos, metodo VerifyPresence(), metodo Intent e a regra do ciclo de vida das Activity...
+para isso:
+
+1 receba o dado CONFIRMATION_YES ou CONFIRMATION_NO da chave, logicamente ele tem a informacao se o
+butao foi clicado ou nao para dar essa informacao ao usuario no VerifyPresence().
+    //retorna qualquer valor associado a chave
+    String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+
+2 com a super-posicao de valor da key, so devolva sem abrir a caixa o mesmo valor para o DetailsActivity
+com o metodo:
+    Intent a = new Intent(this, DetailsActivity.class);
+    a.putExtra(FimDeAnoConstantes.PRESENCE_KEY, Presence);
+OBS: assim a intencao de mandar esses dados para a açao... mas falta tratar esse dado que foi jogado
+na Details
+OBS2: putExtra("key", dado) pode enviar varios tipos de dados porem com uma chave String, assim como Shered.
+
+3 obedecendo o ciclo de vida das Activitys,para passar o dado no instante, ele tem que rodar se da
+no ato passagen da pagina assim na acao de click:
+    //eventoCLick
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.button_confirm) {
+            //instancia (context, açao)
+            Intent intent = new Intent(this, DetailsActivity.class);
+            //putExtra, passagem retorno do dado da key para a Details
+            String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+            intent.putExtra(FimDeAnoConstantes.PRESENCE_KEY, Presence);
+            //abrir Activity da açao
+            startActivity(intent);
+        }
+    }
+
+    OBS: o dado da key e uma inforamcao que sera tratada no DetailsActivity e sua resposta se da no check Box
+         estar verde ou nao, tendo 3 possibilidades: Key nao_confirmado, CONFIRMATION_YES ou CONFIRMATION_NO
+         mas so o que nos intereca e a CONFIRMATION_YES
+
+4 no DetailsActivity seu tratamento no metodo loadDataPromActivity(), recebendo os dados com
+getIntent().getExtras() o primeiro se comunica com Intent instanciada em outra activity grassas ao contexto
+o segundo define o tipo de resposta que procuro que retorna um tipo diferente o tipo Bundle, pense nele como
+um tipo abistrato de dado que porven da uniao da String key com dado do tipo generico:
+        private void loadDataPromActivity(){
+            Bundle extra = getIntent().getExtras();
+        }
+
+5 ant_erro validacoes se esse extra for nullo(se futuramente extender o codigo para existir varias
+DetailsActivity) e getString tbm pode retornar nullo(na conversao de Budle para string) isso acontece
+pois na conversao perde as propiedades do SheredPreference de defvelue do getStoredString:
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            String Presence = extra.getString(FimDeAnoConstantes.PRESENCE_KEY);
+            if (Presence != null) {
+
+            }
+
+6 o dado da key e uma inforamcao que sera tratada no DetailsActivity e sua resposta se da no check Box
+  estar verde ou nao, tendo 3 possibilidades: Key nao_confirmado, CONFIRMATION_YES ou CONFIRMATION_NO
+  mas so o que nos intereca e a CONFIRMATION_YES selecionando ela com && acaba assim:
+    private void loadDataPromActivity(){
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            String Presence = extra.getString(FimDeAnoConstantes.PRESENCE_KEY);
+            if (Presence != null && Presence.equals(FimDeAnoConstantes.CONFIRMATION_YES)) {
+                this.mViewHolder.checkParticipate.setChecked(true);
+            } else {
+                this.mViewHolder.checkParticipate.setChecked(false);
+            }
+        }
+    }
 ----------------------------------------------------------------------------------------------------
 Style button usando background
 button e um conteiner colorido com funcoes diferenciadas; sendo um conteiner pode modificar seu background

@@ -13,6 +13,7 @@ import com.example.appfestafimdeano.constantes.FimDeAnoConstantes;
 import com.example.appfestafimdeano.data.SecurityPreferences;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
+    //cilco de vida de uma activity
     @Override
     protected void onStart() {
         super.onStart();
@@ -76,8 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_confirm) {
-            Intent a = new Intent(this, DetailsActivity.class);
-            startActivity(a);
+            //instancia (context, açao)
+            Intent intent = new Intent(this, DetailsActivity.class);
+            //putExtra, passagem retorno do dado da key para a Details
+            String Presence = this.mSecurityPreference.getStoredString(FimDeAnoConstantes.PRESENCE_KEY);
+            intent.putExtra(FimDeAnoConstantes.PRESENCE_KEY, Presence);
+            //abrir Activity da açao
+            startActivity(intent);
         }
     }
 
